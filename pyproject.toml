@@ -20,6 +20,7 @@ classifiers = [
 
 requires-python = ">=3.10"  # py_ver
 dependencies = [
+    "attrs>=25.3.0",
     "loguru>=0.7.3",
 ]
 

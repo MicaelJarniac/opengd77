@@ -862,6 +862,7 @@ name = "opengd77"
 version = "0.0.0"
 source = { editable = "." }
 dependencies = [
+    { name = "attrs" },
     { name = "loguru" },
 ]
 
@@ -928,7 +929,10 @@ typing = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "loguru", specifier = ">=0.7.3" }]
+requires-dist = [
+    { name = "attrs", specifier = ">=25.3.0" },
+    { name = "loguru", specifier = ">=0.7.3" },
+]
 
 [package.metadata.requires-dev]
 automation = [{ name = "nox", extras = ["uv"], specifier = ">=2025.2.9" }]

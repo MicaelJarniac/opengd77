@@ -1,9 +1,8 @@
-OpenGD77
-opengd77
-opengd77
 addopts
+APRS
 autosummary
 celerybeat
+Codeplug
 Connor
 crustypy
 Cython
@@ -24,6 +23,8 @@ modindex
 mypy
 nosetests
 noxfile
+opengd77
+OpenGD77
 pipenv
 Pipfile
 popd
@@ -48,6 +49,7 @@ SPHINXOPTS
 Spyder
 spyderproject
 spyproject
+timeslot
 toctree
 unittests
 venv
