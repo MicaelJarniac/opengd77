@@ -14,6 +14,7 @@ class Max(IntEnum):
     """Maximums."""
 
     CONTACTS = 1024
+    DTMF = 63
     CHANNELS = 1024
     ZONES = 68
     CHANNELS_PER_ZONE = 80
@@ -24,4 +25,6 @@ class Max(IntEnum):
     CHARS_ZONE_NAME = 16
     CHARS_APRS_NAME = 8
     CHARS_TG_LIST_NAME = 15
+    CHARS_DTMF_NAME = 15
+    CHARS_DTMF_CODE = 16
     CHARS_APRS_VIA = 6

@@ -1,5 +1,6 @@
 addopts
 APRS
+APRSCSV
 autosummary
 celerybeat
 Codeplug
@@ -8,6 +9,8 @@ crustypy
 Cython
 dmypy
 docstrings
+DTMF
+DTMFCSV
 epub
 errorlevel
 furo
