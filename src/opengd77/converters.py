@@ -10,6 +10,7 @@ __all__: list[str] = [
     "ON_OFF",
     "POSITION_MASKING",
     "POWER",
+    "TALKER_ALIAS",
     "TRUE_FALSE",
     "YES_NO",
     "aprs_to_dict",
@@ -42,6 +43,7 @@ from opengd77.csv_models import (
     OnOffCSV,
     PositionMaskingCSV,
     PowerCSV,
+    TalkerAliasCSV,
     TGListCSV,
     TrueFalseCSV,
     YesNoCSV,
@@ -61,6 +63,7 @@ from opengd77.models import (
     IconTable,
     PositionMasking,
     Power,
+    TalkerAlias,
     TGList,
     Zone,
 )
@@ -114,6 +117,14 @@ BAUD_RATE: Final[dict[BaudRate, BaudRateCSV]] = {
 BANDWIDTH: Final[dict[Bandwidth, BandwidthCSV]] = {
     Bandwidth.BW_12_5KHZ: "12.5",
     Bandwidth.BW_25KHZ: "25.0",
+}
+
+
+TALKER_ALIAS: Final[dict[TalkerAlias | None, TalkerAliasCSV]] = {
+    None: "Off",
+    TalkerAlias.APRS: "APRS",
+    TalkerAlias.TEXT: "Text",
+    TalkerAlias.APRS | TalkerAlias.TEXT: "APRS+Text",
 }
 
 
@@ -216,6 +227,7 @@ def tg_list_to_dict(tg_list: TGList) -> TGListCSV:
 
 
 def channel_to_dict(channel: Channel, /, *, number: int) -> ChannelCSV:
+    # sourcery skip: extract-method
     """Convert a channel to a dictionary."""
     validate(channel)
     out = ChannelCSV(
@@ -252,6 +264,8 @@ def channel_to_dict(channel: Channel, /, *, number: int) -> ChannelCSV:
         out["Contact"] = channel.contact.name if channel.contact else "None"
         out["TG List"] = channel.tg_list.name if channel.tg_list else "None"
         out["DMR ID"] = str(channel.override_master_dmr_id or "None")
+        out["TS1_TA_Tx"] = TALKER_ALIAS[channel.timeslot_1_talker_alias]
+        out["TS2_TA_Tx"] = TALKER_ALIAS[channel.timeslot_2_talker_alias]
     return out
 
 

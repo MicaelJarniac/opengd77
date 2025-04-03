@@ -23,6 +23,7 @@ __all__: list[str] = [
     "Zone",
 ]
 
+from collections.abc import Sequence  # noqa: TC003
 from datetime import timedelta
 from decimal import Decimal
 from enum import Enum, Flag, auto
@@ -196,7 +197,9 @@ class TGList:
     """Talk group list."""
 
     name: str = field(validator=and_(max_len(Max.CHARS_TG_LIST_NAME), nn))
-    contacts: list[Contact] = field(factory=list, validator=max_len(Max.TGS_PER_LIST))
+    contacts: Sequence[Contact] = field(
+        factory=list, validator=max_len(Max.TGS_PER_LIST)
+    )
 
     @contacts.validator
     def check_contacts(
@@ -311,7 +314,7 @@ class Zone:
 
     name: str = field(validator=and_(max_len(Max.CHARS_ZONE_NAME), nn))
     """Name."""
-    channels: list[Channel] = field(
+    channels: Sequence[Channel] = field(
         factory=list, validator=max_len(Max.CHANNELS_PER_ZONE)
     )
     """Channels."""
@@ -330,15 +333,15 @@ class Zone:
 class Codeplug:
     """Codeplug."""
 
-    aprs: list[APRS] = field(factory=list)
+    aprs: Sequence[APRS] = field(factory=list)
     """APRS settings."""
-    contacts: list[Contact] = field(factory=list, validator=max_len(Max.CONTACTS))
+    contacts: Sequence[Contact] = field(factory=list, validator=max_len(Max.CONTACTS))
     """Contacts."""
-    dtmf: list[DTMF] = field(factory=list, validator=max_len(Max.DTMF))
+    dtmf: Sequence[DTMF] = field(factory=list, validator=max_len(Max.DTMF))
     """DTMF contacts."""
-    tg_lists: list[TGList] = field(factory=list, validator=max_len(Max.TG_LISTS))
+    tg_lists: Sequence[TGList] = field(factory=list, validator=max_len(Max.TG_LISTS))
     """Talk group lists."""
-    zones: list[Zone] = field(factory=list, validator=max_len(Max.ZONES))
+    zones: Sequence[Zone] = field(factory=list, validator=max_len(Max.ZONES))
     """Zones."""
-    channels: list[Channel] = field(factory=list, validator=max_len(Max.CHANNELS))
+    channels: Sequence[Channel] = field(factory=list, validator=max_len(Max.CHANNELS))
     """Channels."""

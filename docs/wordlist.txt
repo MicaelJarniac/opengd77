@@ -46,6 +46,7 @@ ropeproject
 Scrapy
 sdist
 SOURCEDIR
+sourcery
 SPHINXBUILD
 sphinxcontrib
 SPHINXOPTS
