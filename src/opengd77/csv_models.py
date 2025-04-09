@@ -29,7 +29,7 @@ from typing import Literal, TypeAlias, TypedDict
 from typing_extensions import NotRequired
 
 ChannelTypeCSV: TypeAlias = Literal["Analogue", "Digital"]
-BandwidthCSV: TypeAlias = Literal["12.5", "25.0"]
+BandwidthCSV: TypeAlias = Literal["12.5", "25"]
 ColorCodeCSV: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 TimeslotCSV: TypeAlias = Literal[1, 2]
 TalkerAliasCSV: TypeAlias = Literal["Off", "APRS", "Text", "APRS+Text"]

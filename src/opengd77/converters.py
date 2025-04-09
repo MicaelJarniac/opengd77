@@ -116,7 +116,7 @@ BAUD_RATE: Final[dict[BaudRate, BaudRateCSV]] = {
 
 BANDWIDTH: Final[dict[Bandwidth, BandwidthCSV]] = {
     Bandwidth.BW_12_5KHZ: "12.5",
-    Bandwidth.BW_25KHZ: "25.0",
+    Bandwidth.BW_25KHZ: "25",
 }
 
 
