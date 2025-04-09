@@ -1,6 +1,19 @@
 # CHANGELOG
 
 
+## v0.2.1 (2025-04-09)
+
+### Bug Fixes
+
+- 25 kHz bandwidth has no decimal
+  ([`7e40fcd`](https://github.com/MicaelJarniac/opengd77/commit/7e40fcd7b93a877cd9890e8f1ccee2443c37f99e))
+
+### Documentation
+
+- **readme**: Links
+  ([`aec05bc`](https://github.com/MicaelJarniac/opengd77/commit/aec05bcce9d81ea87d8e4f41fcb7d08bedbbd243))
+
+
 ## v0.2.0 (2025-04-03)
 
 ### Features
