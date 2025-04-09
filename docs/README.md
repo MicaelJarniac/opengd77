@@ -79,6 +79,15 @@ Python utility to work with the OpenGD77 CPS.
 
 [Read the Docs][docs]
 
+## Related Projects
+- https://github.com/MicaelJarniac/repeaterbook
+- https://github.com/MicaelJarniac/ogdrb
+
+## See Also
+- https://github.com/afourney/hamkit/tree/main/packages/repeaterbook
+- https://github.com/desertblade/OpenGD77-Repeaterbook
+- https://github.com/TomHW/OpenGD77
+
 ## Installation
 
 ### PyPI
