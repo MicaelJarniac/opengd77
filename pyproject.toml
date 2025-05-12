@@ -1,6 +1,6 @@
 [project]
 name = "opengd77"
-version = "0.2.1"
+version = "0.3.0"
 description = "Python utility to work with the OpenGD77 CPS."
 authors = [
   {name = "Micael Jarniac", email = "micael@jarniac.dev"},

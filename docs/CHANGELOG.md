@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.3.0 (2025-05-12)
+
+### Features
+
+- Return str and bytes instead of saving files
+  ([`46e42af`](https://github.com/MicaelJarniac/opengd77/commit/46e42afbac486642d9fdef3ef812a252dfea8aef))
+
+
 ## v0.2.1 (2025-04-09)
 
 ### Bug Fixes
