@@ -25,6 +25,8 @@ __all__: list[str] = [
 ]
 
 import csv
+import io
+import zipfile
 from decimal import Decimal
 from typing import TYPE_CHECKING, Final
 
@@ -70,7 +72,6 @@ from opengd77.models import (
 
 if TYPE_CHECKING:  # pragma: no cover
     from collections.abc import Iterable, Mapping, Sequence
-    from pathlib import Path
 
 TRUE_FALSE: Final[dict[bool, TrueFalseCSV]] = {
     True: "True",
@@ -283,65 +284,59 @@ def zone_to_dict(zone: Zone) -> ZoneCSV:
 
 
 def dicts_to_csv(
-    file: Path,
     data: Iterable[Mapping[str, str | int | Decimal]],
     cols: Sequence[str],
-) -> None:
-    """Convert a dictionary to a CSV string."""
-    with file.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=cols)
+) -> str:
+    """Convert a list of dictionaries to a CSV string."""
+    with io.StringIO() as csv_buffer:
+        writer = csv.DictWriter(csv_buffer, fieldnames=cols)
         writer.writeheader()
-        for row in data:
-            writer.writerow(row)
+        writer.writerows(data)
+        return csv_buffer.getvalue()
 
 
-def codeplug_to_csvs(folder: Path, codeplug: Codeplug) -> None:
-    """Convert a codeplug to CSV files."""
-    folder.mkdir(parents=True, exist_ok=True)
+def codeplug_to_csvs(codeplug: Codeplug) -> dict[str, str]:
+    """Convert a codeplug to CSV strings."""
+    return {
+        "APRS.csv": dicts_to_csv(
+            [aprs_to_dict(aprs) for aprs in codeplug.aprs],  # type: ignore[misc]
+            list(APRSCSV.__annotations__.keys()),
+        ),
+        "Contacts.csv": dicts_to_csv(
+            [contact_to_dict(contact) for contact in codeplug.contacts],  # type: ignore[misc]
+            list(ContactCSV.__annotations__.keys()),
+        ),
+        "DTMF.csv": dicts_to_csv(
+            [dtmf_to_dict(dtmf) for dtmf in codeplug.dtmf],  # type: ignore[misc]
+            list(DTMFCSV.__annotations__.keys()),
+        ),
+        "TG_Lists.csv": dicts_to_csv(
+            [tg_list_to_dict(tg_list) for tg_list in codeplug.tg_lists],  # type: ignore[misc]
+            list(TGListCSV.__annotations__.keys())
+            + [f"Contact{i + 1}" for i in range(Max.TGS_PER_LIST)],
+        ),
+        "Zones.csv": dicts_to_csv(
+            [zone_to_dict(zone) for zone in codeplug.zones],  # type: ignore[misc]
+            list(ZoneCSV.__annotations__.keys())
+            + [f"Channel{i + 1}" for i in range(Max.CHANNELS_PER_ZONE)],
+        ),
+        "Channels.csv": dicts_to_csv(
+            [
+                channel_to_dict(channel, number=i + 1)  # type: ignore[misc]
+                for i, channel in enumerate(codeplug.channels)
+            ],
+            list(ChannelCSV.__annotations__.keys()),
+        ),
+    }
 
-    # APRS
-    dicts_to_csv(
-        folder / "APRS.csv",
-        [aprs_to_dict(aprs) for aprs in codeplug.aprs],  # type: ignore[misc]
-        list(APRSCSV.__annotations__.keys()),
-    )
 
-    # Contacts
-    dicts_to_csv(
-        folder / "Contacts.csv",
-        [contact_to_dict(contact) for contact in codeplug.contacts],  # type: ignore[misc]
-        list(ContactCSV.__annotations__.keys()),
-    )
+def csvs_to_zip(csvs: dict[str, str]) -> bytes:
+    """Convert a dictionary of CSV strings to a ZIP file.
 
-    # DTMF
-    dicts_to_csv(
-        folder / "DTMF.csv",
-        [dtmf_to_dict(dtmf) for dtmf in codeplug.dtmf],  # type: ignore[misc]
-        list(DTMFCSV.__annotations__.keys()),
-    )
-
-    # TG Lists
-    dicts_to_csv(
-        folder / "TG_Lists.csv",
-        [tg_list_to_dict(tg_list) for tg_list in codeplug.tg_lists],  # type: ignore[misc]
-        list(TGListCSV.__annotations__.keys())
-        + [f"Contact{i + 1}" for i in range(Max.TGS_PER_LIST)],
-    )
-
-    # Zones
-    dicts_to_csv(
-        folder / "Zones.csv",
-        [zone_to_dict(zone) for zone in codeplug.zones],  # type: ignore[misc]
-        list(ZoneCSV.__annotations__.keys())
-        + [f"Channel{i + 1}" for i in range(Max.CHANNELS_PER_ZONE)],
-    )
-
-    # Channels
-    dicts_to_csv(
-        folder / "Channels.csv",
-        [
-            channel_to_dict(channel, number=i + 1)  # type: ignore[misc]
-            for i, channel in enumerate(codeplug.channels)
-        ],
-        list(ChannelCSV.__annotations__.keys()),
-    )
+    Save the returning bytes to a file with a .zip extension.
+    """
+    with io.BytesIO() as zip_buffer:
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+            for name, data in csvs.items():
+                zip_file.writestr(name, data)
+        return zip_buffer.getvalue()
